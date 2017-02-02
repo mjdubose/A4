@@ -3,7 +3,7 @@
 <head>
   <script LANGUAGE="JavaScript">
 
-    var keys = []
+    var keys = [];
     keys.push('<form><table border ="1"><tr><th>Keys</th><th>Bitting</th></tr>');
     keys.push('<tr><td>CTRL</td><td><input name="a0" size = "7" value = "1234567" onchange="CheckMe(this)"/></td></tr>');
     keys.push('<tr><td>GGM </td><td><input name="a1" size = "7" value = "5656565" onchange="CheckMe(this)"/></td></tr>');
@@ -50,8 +50,8 @@
       var form = window.document.forms[0];
       var bittingArray = [];
 
-
-      for (var i = 0; i < form.elements.length; i++) {
+           var i =0;
+      for (; i < form.elements.length; i++) {
         if (form.elements[i].type == "text") {
           if (form.elements[i].value == "") { alert("A bitting entry is missing"); return; }
           bittingArray.push(form.elements[i].value.split(''));
@@ -61,12 +61,12 @@
       var output = '<table border ="1"><tr>';
       // original values
 
-      var lowestBittingValue = new Array(9, 9, 9, 9, 9, 9, 9);
+      var lowestBittingValue = [9, 9, 9, 9, 9, 9, 9];
       var workingBittingValue = new Array(2);
-      for (var i = 1; i < bittingArray.length; i++)
-      { workingBittingValue[i - 1] = new Array(bittingArray[i][0], bittingArray[i][1], bittingArray[i][2], bittingArray[i][3], bittingArray[i][4], bittingArray[i][5], bittingArray[i][6]); }
-      for (var i = 1; i < bittingArray.length; i++) {
-        for (var x = 0; x < 7; x++) {
+      for ( i = 1; i < bittingArray.length; i++)
+      { workingBittingValue[i - 1] = [bittingArray[i][0], bittingArray[i][1], bittingArray[i][2], bittingArray[i][3], bittingArray[i][4], bittingArray[i][5], bittingArray[i][6]]; }
+      for ( i = 1; i < bittingArray.length; i++) {
+        for ( x = 0; x < 7; x++) {
           if (bittingArray[i][x] < lowestBittingValue[x])
           { lowestBittingValue[x] = bittingArray[i][x]; }
         }
@@ -76,40 +76,40 @@
         output += '<td>' + item + '</td>';
       });
       output += '</tr>';
-      bittingArray[bittingArray.length] = new Array(lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]);
+      bittingArray[bittingArray.length] = [lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]];
       //start of bitting loop
       for (var z = 0; z < 7; z++) {
-        for (var i = 0; i < workingBittingValue.length; i++) {
+        for ( i = 0; i < workingBittingValue.length; i++) {
           for (var x = 0; x < 7; x++) {
             workingBittingValue[i][x] = workingBittingValue[i][x] - lowestBittingValue[x];
             if (workingBittingValue[i][x] < 0)
             { workingBittingValue[i][x] = 0; }
           }
         }
-        var lowestBittingValue = new Array(9, 9, 9, 9, 9, 9, 9); // reset values to 9 to detect which values need to be changed
-        for (var i = 0; i < workingBittingValue.length; i++) {
-          for (var x = 0; x < 7; x++) {
+       lowestBittingValue =[9, 9, 9, 9, 9, 9, 9]; // reset values to 9 to detect which values need to be changed
+        for ( i = 0; i < workingBittingValue.length; i++) {
+          for ( x = 0; x < 7; x++) {
             if ((workingBittingValue[i][x] < lowestBittingValue[x]) && (workingBittingValue[i][x] > 0))  // get the lowestBittingValue value that's not zero
             { lowestBittingValue[x] = workingBittingValue[i][x]; }
           }
         }
         var checkfornines = true; //reset 9 tracking variable
-        for (var i = 0; i < 7; i++) {
+        for ( i = 0; i < 7; i++) {
           if (lowestBittingValue[i] < 9)  // if there is a value less than 9 set tracking value to false so that values will be caculated
           { checkfornines = false; }
         }
         if (checkfornines == false) {
           output += '<tr><td>Top Pins</td>';
-          for (var x = 0; x < 7; x++) {
+          for ( x = 0; x < 7; x++) {
             if (lowestBittingValue[x] == 9) { lowestBittingValue[x] = 0; }
             output += '<td>' + lowestBittingValue[x] + '</td>';
           }
-          bittingArray[bittingArray.length] = new Array(lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]);
+          bittingArray[bittingArray.length] = [lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]];
           output += '</tr>';
         }
       }
-      bittingArray[bittingArray.length + 1] = new Array(8 - bittingArray[0][0], 8 - bittingArray[0][1], 8 - bittingArray[0][2], 8 - bittingArray[0][3], 8 - bittingArray[0][4], 8 - bittingArray[0][5], 8 - bittingArray[0][6]);
-      bittingArray[bittingArray.length - 2] = new Array(0, 0, 0, 0, 0, 0, 0);
+      bittingArray[bittingArray.length + 1] = [8 - bittingArray[0][0], 8 - bittingArray[0][1], 8 - bittingArray[0][2], 8 - bittingArray[0][3], 8 - bittingArray[0][4], 8 - bittingArray[0][5], 8 - bittingArray[0][6]];
+      bittingArray[bittingArray.length - 2] = [0, 0, 0, 0, 0, 0, 0];
       var a = 0;
       var b = 0;
       var c = 0;
@@ -117,7 +117,7 @@
       var e = 0;
       var f = 0;
       var g = 0;
-      for (var i = numberOfValidFormElements; i < bittingArray.length; i++) {
+      for ( i = numberOfValidFormElements; i < bittingArray.length; i++) {
         a = (bittingArray[i][0] - 0) + a;
         b = (bittingArray[i][1] - 0) + b;
         c = (bittingArray[i][2] - 0) + c;
@@ -126,15 +126,15 @@
         f = (bittingArray[i][5] - 0) + f;
         g = (bittingArray[i][6] - 0) + g;
       }
-      bittingArray[bittingArray.length - 2] = new Array(14 - a, 14 - b, 14 - c, 14 - d, 14 - e, 14 - f, 14 - g);
-      for (var i = bittingArray.length - 2; i < bittingArray.length; i++) {
+      bittingArray[bittingArray.length - 2] = [14 - a, 14 - b, 14 - c, 14 - d, 14 - e, 14 - f, 14 - g];
+      for ( i = bittingArray.length - 2; i < bittingArray.length; i++) {
         output += '<tr><td>Top Pins</td>';
         for (var j = 0; j < 7; j++) {
           output += '<td>' + bittingArray[i][j] + '</td>';
         }
         output += '</tr>'
       }
-      output += '</table>'
+      output += '</table>';
       document.getElementById('results').innerHTML = output;
     }
   </script>
