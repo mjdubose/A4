@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-    <script >
+    <script>
 
         const keys = [];
         keys.push('<form><table ><tr><th>Keys</th><th>Bitting</th></tr>');
@@ -46,13 +46,13 @@
             const form = window.document.forms[0];
             const bittingArray = [];
 
-                [...form.elements].forEach(item => {
+            [...form.elements].forEach(item => {
                 if (item.type === "text") {
                     if (item.value === "") {
                         alert("A bitting entry is missing");
                         return;
                     }
-                    bittingArray.push(item.value.split('').map(item =>  item * 1));
+                    bittingArray.push(item.value.split('').map(item => item * 1));
                     numberOfValidFormElements++;
                 }
             });
@@ -72,14 +72,14 @@
                 }
             }
             output += '<tr><td>Bottom Pins</td>';
-            lowestBittingValue.forEach( (item) => {
+            lowestBittingValue.forEach((item) => {
                 output += '<td>' + item + '</td>';
             });
             output += '</tr>';
-            bittingArray.push( [lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]] );
+            bittingArray.push([lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]]);
             //start of bitting loop
             for (let z = 0; z < 7; z++) {
-                workingBittingValue.forEach(item =>{
+                workingBittingValue.forEach(item => {
                     for (x = 0; x < 7; x++) {
                         item[x] = item[x] - lowestBittingValue[x];
                         if (item[x] < 0) {
@@ -88,7 +88,7 @@
                     }
                 })
                 lowestBittingValue = [9, 9, 9, 9, 9, 9, 9]; // reset values to 9 to detect which values need to be changed
-                workingBittingValue.forEach(item =>{
+                workingBittingValue.forEach(item => {
                     for (x = 0; x < 7; x++) {
                         if ((item[x] < lowestBittingValue[x]) && (item[x] > 0))  // get the lowestBittingValue value that's not zero
                         {
@@ -105,7 +105,7 @@
                         }
                         output += '<td>' + lowestBittingValue[x] + '</td>';
                     }
-                    bittingArray.push( [lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]]);
+                    bittingArray.push([lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]]);
                     output += '</tr>';
                 }
             }
@@ -119,13 +119,13 @@
             let f = 0;
             let g = 0;
             for (let i = numberOfValidFormElements; i < bittingArray.length; i++) {
-                a = bittingArray[i][0]  + a;
-                b = bittingArray[i][1]  + b;
-                c = bittingArray[i][2]  + c;
-                d = bittingArray[i][3]  + d;
-                e = bittingArray[i][4]  + e;
-                f = bittingArray[i][5]  + f;
-                g = bittingArray[i][6]  + g;
+                a = bittingArray[i][0] + a;
+                b = bittingArray[i][1] + b;
+                c = bittingArray[i][2] + c;
+                d = bittingArray[i][3] + d;
+                e = bittingArray[i][4] + e;
+                f = bittingArray[i][5] + f;
+                g = bittingArray[i][6] + g;
             }
             bittingArray[bittingArray.length - 2] = [14 - a, 14 - b, 14 - c, 14 - d, 14 - e, 14 - f, 14 - g];
             for (let i = bittingArray.length - 2; i < bittingArray.length; i++) {
