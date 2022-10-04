@@ -52,7 +52,7 @@
                         alert("A bitting entry is missing");
                         return;
                     }
-                    bittingArray.push(item.value.split(''));
+                    bittingArray.push(item.value.split('').map(item =>  item * 1));
                     numberOfValidFormElements++;
                 }
             });
@@ -119,13 +119,13 @@
             let f = 0;
             let g = 0;
             for (let i = numberOfValidFormElements; i < bittingArray.length; i++) {
-                a = (bittingArray[i][0] - 0) + a;
-                b = (bittingArray[i][1] - 0) + b;
-                c = (bittingArray[i][2] - 0) + c;
-                d = (bittingArray[i][3] - 0) + d;
-                e = (bittingArray[i][4] - 0) + e;
-                f = (bittingArray[i][5] - 0) + f;
-                g = (bittingArray[i][6] - 0) + g;
+                a = bittingArray[i][0]  + a;
+                b = bittingArray[i][1]  + b;
+                c = bittingArray[i][2]  + c;
+                d = bittingArray[i][3]  + d;
+                e = bittingArray[i][4]  + e;
+                f = bittingArray[i][5]  + f;
+                g = bittingArray[i][6]  + g;
             }
             bittingArray[bittingArray.length - 2] = [14 - a, 14 - b, 14 - c, 14 - d, 14 - e, 14 - f, 14 - g];
             for (let i = bittingArray.length - 2; i < bittingArray.length; i++) {
