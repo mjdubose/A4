@@ -1,156 +1,203 @@
 <html lang="en">
-
-<head>
+  <head>
     <script>
+      const keys = [];
+      keys.push(
+        '<form><div class="flexParent"><div style="display: flex;"><table ><tr><th>Keys</th><th>Bitting</th></tr>'
+      );
+      keys.push(
+        '<tr><td>CTRL</td><td><input name="a0" size = "7" value = "1234567" onchange="isValid(this)"/></td></tr>'
+      );
+      keys.push(
+        '<tr><td>GGM </td><td><input name="a1" size = "7" value = "5656565" onchange="isValid(this)"/></td></tr>'
+      );
+      keys.push(
+        '<tr><td>Pass Key 1 </td><td><input name="a2" size = "7" onchange="isValid(this)"/></td></tr>'
+      );
+      keys.push(
+        '</table></div><input class="flexButton" type = "button" value = "Add Another Key" onclick ="addNewInputBox()"/><input class="flexButton" type = "button" value = "Remove Last Key" onclick="removeInputBox()"/><input class="flexButton" type = "button" value = "Calculate Bitting" onclick = "doBittingCalc()" /> <input class="flexButton" type = "reset" value = "Reset Values"/></div></form>'
+      );
 
-        const keys = [];
-        keys.push('<form><table ><tr><th>Keys</th><th>Bitting</th></tr>');
-        keys.push('<tr><td>CTRL</td><td><input name="a0" size = "7" value = "1234567" onchange="CheckMe(this)"/></td></tr>');
-        keys.push('<tr><td>GGM </td><td><input name="a1" size = "7" value = "5656565" onchange="CheckMe(this)"/></td></tr>');
-        keys.push('<tr><td>Pass Key 1 </td><td><input name="a2" size = "7" onchange="CheckMe(this)"/></td></tr>');
-        keys.push('</table><input type = "button" value = "Add Another Key" onclick ="addNewInputBox()"/><br><input type = "button" value = "Remove Last Key" onclick="removeInputBox()"/><br><input type = "button" value = "Calculate Bitting" onclick = "doBittingCalc()" /><br><input type = "reset" value = "Reset Values"/></form>');
-
-        const CheckMe = (entry) => {
-            const value = entry.value;
-            if ((value.length < 7) || (value.length >= 8) || (isNaN(value))) {
-                alert(value + " is not a valid bitting code ");
-                entry.value = "";
-            }
-        };
-
-        const init = () => {
-            document.getElementById('menubody').innerHTML = keys.join('');
-        };
-
-        const addNewInputBox = () => {
-            const count = keys.length;
-            keys.push(keys[count - 1]);
-            keys[count - 1] = '<tr><td>Pass Key ' + (count - 3) + '</td><td><input name="a' + (count - 2) + '" size = "7" onchange="CheckMe(this)"/></td></tr>';
-            init();
-        };
-
-        const removeInputBox = () => {
-            const count = keys.length;
-            if (count <= 5) {
-                alert("Cannot remove any keys");
-            } else {
-                keys[count - 2] = keys[count - 1];
-                keys.pop();
-                init();
-            }
-        };
-
-        const doBittingCalc = () => {
-            let x;
-            let numberOfValidFormElements = 0; //save the original number of array elements.
-            const form = window.document.forms[0];
-            const bittingArray = [];
-
-            [...form.elements].forEach(item => {
-                if (item.type === "text") {
-                    if (item.value === "") {
-                        alert("A bitting entry is missing");
-                        return;
-                    }
-                    bittingArray.push(item.value.split('').map(item => item * 1));
-                    numberOfValidFormElements++;
-                }
-            });
-            let output = '<table ><tr>';
-            // original values
-
-            let lowestBittingValue = [9, 9, 9, 9, 9, 9, 9];
-            const workingBittingValue = new Array(2);
-            for (let i = 1; i < bittingArray.length; i++) {
-                workingBittingValue[i - 1] = [bittingArray[i][0], bittingArray[i][1], bittingArray[i][2], bittingArray[i][3], bittingArray[i][4], bittingArray[i][5], bittingArray[i][6]];
-            }
-            for (let i = 1; i < bittingArray.length; i++) {
-                for (x = 0; x < 7; x++) {
-                    if (bittingArray[i][x] < lowestBittingValue[x]) {
-                        lowestBittingValue[x] = bittingArray[i][x];
-                    }
-                }
-            }
-            output += '<tr><td>Bottom Pins</td>';
-            lowestBittingValue.forEach((item) => {
-                output += '<td>' + item + '</td>';
-            });
-            output += '</tr>';
-            bittingArray.push([lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]]);
-            //start of bitting loop
-            for (let z = 0; z < 7; z++) {
-                workingBittingValue.forEach(item => {
-                    for (x = 0; x < 7; x++) {
-                        item[x] = item[x] - lowestBittingValue[x];
-                        if (item[x] < 0) {
-                            item[x] = 0;
-                        }
-                    }
-                })
-                lowestBittingValue = [9, 9, 9, 9, 9, 9, 9]; // reset values to 9 to detect which values need to be changed
-                workingBittingValue.forEach(item => {
-                    for (x = 0; x < 7; x++) {
-                        if ((item[x] < lowestBittingValue[x]) && (item[x] > 0))  // get the lowestBittingValue value that's not zero
-                        {
-                            lowestBittingValue[x] = item[x];
-                        }
-                    }
-                })
-
-                if (lowestBittingValue.some(item => item < 9)) {
-                    output += '<tr><td>Top Pins</td>';
-                    for (x = 0; x < 7; x++) {
-                        if (lowestBittingValue[x] === 9) {
-                            lowestBittingValue[x] = 0;
-                        }
-                        output += '<td>' + lowestBittingValue[x] + '</td>';
-                    }
-                    bittingArray.push([lowestBittingValue[0], lowestBittingValue[1], lowestBittingValue[2], lowestBittingValue[3], lowestBittingValue[4], lowestBittingValue[5], lowestBittingValue[6]]);
-                    output += '</tr>';
-                }
-            }
-            bittingArray[bittingArray.length + 1] = [8 - bittingArray[0][0], 8 - bittingArray[0][1], 8 - bittingArray[0][2], 8 - bittingArray[0][3], 8 - bittingArray[0][4], 8 - bittingArray[0][5], 8 - bittingArray[0][6]];
-            bittingArray[bittingArray.length - 2] = [0, 0, 0, 0, 0, 0, 0];
-            let a = 0;
-            let b = 0;
-            let c = 0;
-            let d = 0;
-            let e = 0;
-            let f = 0;
-            let g = 0;
-            for (let i = numberOfValidFormElements; i < bittingArray.length; i++) {
-                a = bittingArray[i][0] + a;
-                b = bittingArray[i][1] + b;
-                c = bittingArray[i][2] + c;
-                d = bittingArray[i][3] + d;
-                e = bittingArray[i][4] + e;
-                f = bittingArray[i][5] + f;
-                g = bittingArray[i][6] + g;
-            }
-            bittingArray[bittingArray.length - 2] = [14 - a, 14 - b, 14 - c, 14 - d, 14 - e, 14 - f, 14 - g];
-            for (let i = bittingArray.length - 2; i < bittingArray.length; i++) {
-                output += '<tr><td>Top Pins</td>';
-                for (let j = 0; j < 7; j++) {
-                    output += '<td>' + bittingArray[i][j] + '</td>';
-                }
-                output += '</tr>'
-            }
-            output += '</table>';
-            document.getElementById('results').innerHTML = output;
-        };
-    </script>
-    <title> 2C A4 Pinning </title>
-    <style>
-        table, th, td {
-            border: 1px solid;
+      const isValid = (entry) => {
+        const value = entry.value;
+        if (value.length < 7 || value.length >= 8 || isNaN(value)) {
+          alert(value + " is not a valid bitting code ");
+          entry.value = "";
         }
+      };
+
+      const init = () => {
+        document.getElementById("menubody").innerHTML = keys.join("");
+      };
+
+      const addNewInputBox = () => {
+        const count = keys.length;
+        keys.push(keys[count - 1]);
+        keys[count - 1] =
+          "<tr><td>Pass Key " +
+          (count - 3) +
+          '</td><td><input name="a' +
+          (count - 2) +
+          '" size = "7" onchange="isValid(this)"/></td></tr>';
+        init();
+      };
+
+      const removeInputBox = () => {
+        const count = keys.length;
+        if (count <= 5) {
+          alert("Cannot remove any keys");
+        } else {
+          keys[count - 2] = keys[count - 1];
+          keys.pop();
+          init();
+        }
+      };
+
+      const doBittingCalc = () => {
+        let x;
+        let numberOfValidFormElements = 0; //save the original number of array elements.
+        const form = window.document.forms[0];
+        const bittingArray = [];
+
+        [...form.elements].forEach((item) => {
+          if (item.type === "text") {
+            if (item.value === "") {
+              alert("A bitting entry is missing");
+              return;
+            }
+            bittingArray.push(item.value.split("").map((item) => item * 1));
+            numberOfValidFormElements++;
+          }
+        });
+        let output = "<table ><tr>";
+        // original values
+
+        let lowestBittingValue = [9, 9, 9, 9, 9, 9, 9];
+        const workingBittingValue = new Array(2);
+
+        bittingArray.forEach((position, i) => {
+          if (i === 0) return;
+          workingBittingValue[i - 1] = [...position];
+        });
+
+        bittingArray.forEach((key) => {
+          key.forEach((position, i) => {
+            if (position < lowestBittingValue[i]) {
+              lowestBittingValue[i] = position;
+            }
+          });
+        });
+        output += "<tr><td>Bottom Pins</td>";
+        lowestBittingValue.forEach((item) => {
+          output += "<td>" + item + "</td>";
+        });
+        output += "</tr>";
+        bittingArray.push([...lowestBittingValue]);
+        //start of bitting loop
+        for (let z = 0; z < 7; z++) {
+          workingBittingValue.forEach((item) => {
+            for (x = 0; x < 7; x++) {
+              item[x] = item[x] - lowestBittingValue[x];
+              if (item[x] < 0) {
+                item[x] = 0;
+              }
+            }
+          });
+          lowestBittingValue = [9, 9, 9, 9, 9, 9, 9]; // reset values to 9 to detect which values need to be changed
+          workingBittingValue.forEach((item) => {
+            for (x = 0; x < 7; x++) {
+              if (item[x] < lowestBittingValue[x] && item[x] > 0) {
+                // get the lowestBittingValue value that's not zero
+                lowestBittingValue[x] = item[x];
+              }
+            }
+          });
+
+          if (lowestBittingValue.some((item) => item < 9)) {
+            output += "<tr><td>Top Pins</td>";
+            for (x = 0; x < 7; x++) {
+              if (lowestBittingValue[x] === 9) {
+                lowestBittingValue[x] = 0;
+              }
+              output += "<td>" + lowestBittingValue[x] + "</td>";
+            }
+            bittingArray.push([...lowestBittingValue]);
+            output += "</tr>";
+          }
+        }
+        bittingArray.push([0, 0, 0, 0, 0, 0, 0]);
+        bittingArray.push([
+          8 - bittingArray[0][0],
+          8 - bittingArray[0][1],
+          8 - bittingArray[0][2],
+          8 - bittingArray[0][3],
+          8 - bittingArray[0][4],
+          8 - bittingArray[0][5],
+          8 - bittingArray[0][6],
+        ]);
+
+        let a = 0;
+        let b = 0;
+        let c = 0;
+        let d = 0;
+        let e = 0;
+        let f = 0;
+        let g = 0;
+
+        for (let i = numberOfValidFormElements; i < bittingArray.length; i++) {
+          a = bittingArray[i][0] + a;
+          b = bittingArray[i][1] + b;
+          c = bittingArray[i][2] + c;
+          d = bittingArray[i][3] + d;
+          e = bittingArray[i][4] + e;
+          f = bittingArray[i][5] + f;
+          g = bittingArray[i][6] + g;
+        }
+
+        bittingArray[bittingArray.length - 2] = [
+          14 - a,
+          14 - b,
+          14 - c,
+          14 - d,
+          14 - e,
+          14 - f,
+          14 - g,
+        ];
+        for (let i = bittingArray.length - 2; i < bittingArray.length; i++) {
+          output += "<tr><td>Top Pins</td>";
+          for (let j = 0; j < 7; j++) {
+            output += "<td>" + bittingArray[i][j] + "</td>";
+          }
+          output += "</tr>";
+        }
+        output += "</table>";
+        document.getElementById("results").innerHTML = output;
+      };
+    </script>
+    <title>2C A4 Pinning</title>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid;
+      }
+
+      .flexParent {
+        display: flex;
+        flex-direction: column;
+        width: 171px;
+        justify-content: center;
+      }
+
+      .flexButton {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+      }
     </style>
-
-</head>
-<body onload="init()">
-<div id="menubody" class="menubody">
-</div>
-<div id="results" class="results"></div>
-</body>
-
+  </head>
+  <body onload="init()">
+    <div id="menubody" class="menubody"></div>
+    <div id="results" class="results"></div>
+  </body>
 </html>
